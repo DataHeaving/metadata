@@ -11,7 +11,7 @@ export const performMDWrite = async <TTableID>(
     tableMD: sql.TableMetaData;
   }>,
   getTableIDString: (tableID: TTableID) => string,
-  { readExistingData, writeNewDataWhenDifferent }: MetaDataFunctionality,
+  { readExistingData, writeNewData }: MetaDataFunctionality,
 ) => {
   const existingMD = await common_validation.retrieveValidatedDataFromStorage(
     readExistingData,
@@ -24,7 +24,7 @@ export const performMDWrite = async <TTableID>(
   });
 
   if (newMD) {
-    await writeNewDataWhenDifferent(newMD);
+    await writeNewData(newMD);
   }
   return newMD;
 };
