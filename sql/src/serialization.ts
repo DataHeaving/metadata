@@ -90,7 +90,9 @@ export const compareMetaData = <TTableID>({
       if (!(tableID in metadata)) {
         // There existed table MD which is now gone, but let's not wipe it
         metadata[tableID] = tableMD;
-        tablesMDWasDifferent = true;
+        if (!tablesMDWasDifferent && !(tableID in previousMetaData)) {
+          tablesMDWasDifferent = true;
+        }
       }
     }
   }
