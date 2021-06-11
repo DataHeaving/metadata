@@ -70,7 +70,9 @@ export const compareMetaData = <TTableID>({
           // We have noticed a change - increment version
           ++mdVersion;
         }
-        tablesMDWasDifferent = mdVersion !== existingMDVersion;
+        if (!tablesMDWasDifferent) {
+          tablesMDWasDifferent = mdVersion !== existingMDVersion;
+        }
         tableDictionary[tableID] = {
           mdVersion,
           columns: thisTableColumns,
