@@ -1,4 +1,6 @@
 # Data Heaving - Metadata
+[![Code Coverage](https://codecov.io/gh/DataHeaving/metadata/branch/develop/graph/badge.svg)](https://codecov.io/gh/DataHeaving/metadata)
+
 This repository is part of [Data Heaving project](https://github.com/DataHeaving).
 There is one package in the repository:
 - [SQL Metadata package](sql) package containing types and methods to serialize and compare a set of metadata about SQL tables.
