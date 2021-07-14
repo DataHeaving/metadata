@@ -4,22 +4,22 @@ import * as sql from "@data-heaving/common-sql";
 import * as common_validation from "@data-heaving/common-validation";
 import * as types from "./types";
 
-export type MetaDataFunctionality = common.ObjectStorageFunctionality<types.SerializedExportedTablesMetaData>;
-export const performMDWrite = async <TTableID>(
-  tables: ReadonlyArray<{
-    tableID: TTableID;
-    tableMD: sql.TableMetaData;
-  }>,
-  getTableIDString: (tableID: TTableID) => string,
-  { readExistingData, writeNewData }: MetaDataFunctionality,
-) => {
-  const existingMD = await common_validation.retrieveValidatedDataFromStorage(
+export const readExistingMetaDataAndWriteIfDifferent = async <TTableID>(
+  {
+    latestMetaData,
+    getTableIDString,
+  }: Pick<ComparisonOptions<TTableID>, "latestMetaData" | "getTableIDString">,
+  {
     readExistingData,
-    types.serializedMetaDataTables.decode,
-  );
+    writeNewData,
+  }: common.ObjectStorageFunctionality<types.SerializedExportedTablesMetaData>,
+) => {
   const newMD = compareMetaData({
-    previousMetaData: existingMD,
-    latestMetaData: tables,
+    previousMetaData: await common_validation.retrieveValidatedDataFromStorage(
+      readExistingData,
+      types.serializedMetaDataTables.decode,
+    ),
+    latestMetaData,
     getTableIDString,
   });
 
@@ -83,7 +83,7 @@ export const compareMetaData = <TTableID>({
     );
   } else {
     metadata = latestMetaData;
-    tablesMDWasDifferent = isDeepStrictEqual(previousMetaData, latestMetaData);
+    tablesMDWasDifferent = !isDeepStrictEqual(previousMetaData, latestMetaData);
   }
 
   // Notice that we might get table deletion in SQL, but we probably don't want to remove it from MD.
@@ -92,7 +92,7 @@ export const compareMetaData = <TTableID>({
       if (!(tableID in metadata)) {
         // There existed table MD which is now gone, but let's not wipe it
         metadata[tableID] = tableMD;
-        if (!tablesMDWasDifferent && !(tableID in previousMetaData)) {
+        if (!tablesMDWasDifferent) {
           tablesMDWasDifferent = true;
         }
       }

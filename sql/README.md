@@ -1,7 +1,10 @@
 # Data Heaving - SQL Metadata
-This repository is part of [Data Heaving project](https://github.com/DataHeaving).
-There is one package in the repository:
-- `SQL Metadata` package containing types and methods to serialize and compare a set of metadata about SQL tables.
+[![Code Coverage](https://codecov.io/gh/DataHeaving/metadata/branch/develop/graph/badge.svg?flag=sql)](https://codecov.io/gh/DataHeaving/metadata)
+
+This folder contains source code for `@data-heaving/md-sql` NPM package.
+The exported entities include:
+- Types to describe some common metadata about SQL tables, and
+- Helper methods to compare existing and latest metadata, and to conditionally write it to storage abstracted by `ObjectStorageFunctionality` type of `@data-heaving/common` package.
 
 # Usage
 Include `@data-heaving/md-sql` dependency in your `package.json` file.
