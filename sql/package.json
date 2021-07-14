@@ -26,6 +26,7 @@
     "@data-heaving/common-validation": "^1.0.0"
   },
   "devDependencies": {
+    "@data-heaving/common": "^1.0.0",
     "@data-heaving/common-sql": "^1.0.0",
     "@data-heaving/common-validation": "^1.0.0",
     "@types/node": "14.14.31",
